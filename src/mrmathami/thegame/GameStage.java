@@ -50,7 +50,8 @@ public final class GameStage {
 				// path finding
 				final Queue<Road> roadQueue = new LinkedList<>();
 
-				for (int i = 0; i < numOfTiles; i++) {
+				//for (int i = 0; i < numOfTiles; i++) {
+				while (scanner.hasNext()) {
 					final String value = scanner.next();
 					if ("NormalSpawner".equals(value)) {
 						final int x = scanner.nextInt();

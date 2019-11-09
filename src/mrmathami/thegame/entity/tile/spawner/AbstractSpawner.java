@@ -29,7 +29,7 @@ public abstract class AbstractSpawner<E extends AbstractEnemy> extends AbstractT
 	public final void onUpdate(@Nonnull GameField field) {
 		this.tickDown -= 1;
 		if (tickDown <= 0 && numOfSpawn > 0) {
-			// TODO: get a random spot inside spawn range
+			// TODO: get a random spot inside spawn range (done !!)
 			// Check if the spot is valid and then spawn an enemy
 			// Remember to set this.tickDown back to this.spawnInterval
 			// and decrease this.numOfSpawn once you spawn an enemy.
@@ -38,7 +38,7 @@ public abstract class AbstractSpawner<E extends AbstractEnemy> extends AbstractT
 			double deltaX = random.nextDouble() * spawningSize;
 			double deltaY = random.nextDouble() * spawningSize;
 
-			field.doSpawn(this.doSpawn(field.getTickCount(), this.getPosX() + deltaX, this.getPosY() + deltaY));
+			field.doSpawn(this.doSpawn(0, this.getPosX() + deltaX, this.getPosY() + deltaY));
 
 			this.tickDown = spawnInterval;
 			this.numOfSpawn -= 1;

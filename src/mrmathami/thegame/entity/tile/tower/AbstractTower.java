@@ -8,7 +8,9 @@ import mrmathami.thegame.entity.enemy.AbstractEnemy;
 import mrmathami.thegame.entity.tile.AbstractTile;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public abstract class AbstractTower<E extends AbstractBullet> extends AbstractTile implements UpdatableEntity {
 	private final double range;
@@ -27,10 +29,21 @@ public abstract class AbstractTower<E extends AbstractBullet> extends AbstractTi
 	public final void onUpdate(@Nonnull GameField field) {
 		this.tickDown -= 1;
 		if (tickDown <= 0) {
-			// TODO: Find a target and spawn a bullet to that direction.
+			// TODO: Find a target and spawn a bullet to that direction.(done !!)
 			// Use GameEntities.getFilteredOverlappedEntities to find target in range
 			// Remember to set this.tickDown back to this.speed after shooting something.
 			// this.tickDown = speed;
+
+			List<AbstractEnemy> enemyList = (List<AbstractEnemy>) GameEntities.getFilteredOverlappedEntities(field.getEntities(), AbstractEnemy.class, getPosX() - range, getPosY() - range, 2 * range, 2 * range);
+			if (enemyList.size() > 0) {
+				AbstractEnemy firstEnemy = enemyList.remove(0);
+				double x = getPosX() + getWidth() / 2;
+				double y = getPosY() + getHeight() / 2;
+				double deltaX = (firstEnemy.getPosX() + firstEnemy.getWidth() / 2) - x;
+				double deltaY = (firstEnemy.getPosY() + firstEnemy.getHeight() / 2) - y;
+				field.doSpawn(this.doSpawn(0, x, y, deltaX , deltaY));
+				this.tickDown = speed;
+			}
 		}
 	}
 
