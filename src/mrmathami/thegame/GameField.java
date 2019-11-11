@@ -2,6 +2,7 @@ package mrmathami.thegame;
 
 
 import mrmathami.thegame.entity.*;
+import mrmathami.thegame.entity.tile.Target;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -27,10 +28,16 @@ public final class GameField {
 	 */
 	private long tickCount;
 
+	/**
+	 * Reward from kill enemy
+	 */
+	private long coin;
+
 	public GameField(@Nonnull GameStage gameStage) {
 		this.width = gameStage.getWidth();
 		this.height = gameStage.getHeight();
 		this.tickCount = 0;
+		this.coin = 0;
 		entities.addAll(gameStage.getEntities());
 	}
 
@@ -46,12 +53,24 @@ public final class GameField {
 		return tickCount;
 	}
 
+	public long getCoin() {
+		return coin;
+	}
+
 	/**
 	 * @return entities on the field. Read-only list.
 	 */
 	@Nonnull
 	public final Collection<GameEntity> getEntities() {
 		return unmodifiableEntities;
+	}
+
+	// Get Target
+	public final Target getTarget(){
+		for (GameEntity gameEntity : entities){
+			if (gameEntity instanceof Target) return (Target) gameEntity;
+		}
+		return null;
 	}
 
 	/**
@@ -61,6 +80,10 @@ public final class GameField {
 	 */
 	public final void doSpawn(@Nonnull GameEntity entity) {
 		if (entity.isBeingOverlapped(0.0, 0.0, width, height)) spawnEntities.add(entity);
+	}
+
+	public final void updateCoin(long reward) {
+		this.coin += reward;
 	}
 
 	/**

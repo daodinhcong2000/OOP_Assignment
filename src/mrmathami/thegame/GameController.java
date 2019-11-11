@@ -124,6 +124,19 @@ public final class GameController extends AnimationTimer {
 		graphicsContext.setFill(Color.BLACK);
 		graphicsContext.fillText(String.format("MSPT: %3.2f", mspt), 0, 12);
 
+		// Display coin from kill ememy
+		graphicsContext.setStroke(Color.WHITE);
+		graphicsContext.setLineWidth(4);
+		graphicsContext.strokeRect(876, 553, 80, 80);
+		graphicsContext.setFill(Color.WHITE);
+		graphicsContext.fillText(String.format("Coin: %d", field.getCoin()), 900, 600);
+
+		// Display Health
+		graphicsContext.setFill(Color.RED);
+		if (field.getTarget() != null)
+			graphicsContext.fillText(String.format("%d", field.getTarget().getHealth()), 40, 470);
+
+
 		// if we have time to spend, do a spin
 		while (currentTick == tick) Thread.onSpinWait();
 	}
@@ -195,10 +208,10 @@ public final class GameController extends AnimationTimer {
 	 * @param mouseEvent the mouse button you press down.
 	 */
 	final void mouseDownHandler(MouseEvent mouseEvent) {
-//		mouseEvent.getButton(); // which mouse button?
-//		// Screen coordinate. Remember to convert to field coordinate
-//		drawer.screenToFieldPosX(mouseEvent.getX());
-//		drawer.screenToFieldPosY(mouseEvent.getY());
+		mouseEvent.getButton(); // which mouse button?
+		// Screen coordinate. Remember to convert to field coordinate
+		drawer.screenToFieldPosX(mouseEvent.getX());
+		drawer.screenToFieldPosY(mouseEvent.getY());
 	}
 
 	/**
@@ -207,9 +220,9 @@ public final class GameController extends AnimationTimer {
 	 * @param mouseEvent the mouse button you release up.
 	 */
 	final void mouseUpHandler(MouseEvent mouseEvent) {
-//		mouseEvent.getButton(); // which mouse button?
-//		// Screen coordinate. Remember to convert to field coordinate
-//		drawer.screenToFieldPosX(mouseEvent.getX());
-//		drawer.screenToFieldPosY(mouseEvent.getY());
+		mouseEvent.getButton(); // which mouse button?
+		// Screen coordinate. Remember to convert to field coordinate
+		drawer.screenToFieldPosX(mouseEvent.getX());
+		drawer.screenToFieldPosY(mouseEvent.getY());
 	}
 }

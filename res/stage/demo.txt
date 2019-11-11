@@ -21,6 +21,7 @@ NormalSpawner 1 1 3 3 45 90 20
 SmallerSpawner 1 1 3 3 30 300 30
 TankerSpawner 1 1 3 3 60 600 5
 BossSpawner 1 1 3 3 0 900 1
+NormalTower 10 0
 NormalTower 20 0
 NormalTower 28 0
 MachineGunTower 8 4
