@@ -4,7 +4,10 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.text.FontSmoothingType;
 import javafx.stage.Stage;
 
@@ -40,9 +43,23 @@ public final class Main extends Application {
 		primaryStage.setResizable(false);
 		primaryStage.setTitle(Config.GAME_NAME);
 		primaryStage.setOnCloseRequest(gameController::closeRequestHandler);
-		primaryStage.setScene(new Scene(new StackPane(canvas)));
+
+		// Display background
+		graphicsContext.drawImage(new Image("startmenu.png"), 0, 0, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
+
+		// Create start Button
+		Button startButton = new Button("");
+		startButton.setBackground(Background.EMPTY);
+		startButton.setMinSize(210, 70);
+
+		AnchorPane anchorPane = new AnchorPane(canvas);
+		anchorPane.getChildren().add(startButton);
+		AnchorPane.setBottomAnchor(startButton, 90.0);
+		AnchorPane.setLeftAnchor(startButton, 370.0);
+
+		primaryStage.setScene(new Scene(anchorPane));
 		primaryStage.show();
 
-		gameController.start();
+		startButton.setOnMouseClicked(event -> gameController.start());
 	}
 }
