@@ -2,9 +2,12 @@ package mrmathami.thegame;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
@@ -150,6 +153,10 @@ public final class GameController extends AnimationTimer {
 		// Start the beat-keeper. Start to call this::tick at a fixed rate.
 		this.scheduledFuture = SCHEDULER.scheduleAtFixedRate(this::tick, 0, Config.GAME_NSPT, TimeUnit.NANOSECONDS);
 		// start the JavaFX loop.
+		super.start();
+	}
+
+	public void continue_ () {
 		super.start();
 	}
 
