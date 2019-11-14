@@ -25,6 +25,10 @@ public abstract class AbstractSpawner<E extends AbstractEnemy> extends AbstractT
 		this.numOfSpawn = numOfSpawn;
 	}
 
+	public boolean canSpawn() {
+		return numOfSpawn > 0;
+	}
+
 	@Override
 	public final void onUpdate(@Nonnull GameField field) {
 		this.tickDown -= 1;

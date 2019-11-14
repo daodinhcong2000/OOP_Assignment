@@ -3,17 +3,25 @@ package mrmathami.thegame;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mrmathami.thegame.drawer.GameDrawer;
+import mrmathami.thegame.entity.enemy.AbstractEnemy;
+import mrmathami.thegame.entity.tile.spawner.AbstractSpawner;
 import mrmathami.utilities.ThreadFactoryBuilder;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -78,7 +86,7 @@ public final class GameController extends AnimationTimer {
 
 		// The game field. Please consider create another way to load a game field.
 		// TODO: I don't have much time, so, spawn some wall then :)
-		this.field = new GameField(GameStage.load("/stage/demo.txt"));
+		this.field = new GameField(Objects.requireNonNull(GameStage.load("/stage/level0.txt")));
 
 		// The drawer. Nothing fun here.
 		this.drawer = new GameDrawer(graphicsContext, field);
@@ -88,6 +96,9 @@ public final class GameController extends AnimationTimer {
 		// that the drawer will select and draw everything in it in an self-defined order.
 		// Can be modified to support zoom in / zoom out of the map.
 		drawer.setFieldViewRegion(0.0, 0.0, Config.TILE_SIZE);
+	}
+	public AnchorPane getPane(){
+		return (AnchorPane) (graphicsContext.getCanvas().getParent());
 	}
 
 	/**
@@ -124,20 +135,46 @@ public final class GameController extends AnimationTimer {
 		// It means how many ms your game spend to update and then draw the game once.
 		// Draw it out mostly for debug
 		final double mspt = (System.nanoTime() - startNs) / 1000000.0;
+		graphicsContext.setFont(Font.font(10));
 		graphicsContext.setFill(Color.BLACK);
 		graphicsContext.fillText(String.format("MSPT: %3.2f", mspt), 0, 12);
 
 		// Display coin from kill ememy
-		graphicsContext.setStroke(Color.WHITE);
-		graphicsContext.setLineWidth(4);
-		graphicsContext.strokeRect(876, 553, 80, 80);
-		graphicsContext.setFill(Color.WHITE);
-		graphicsContext.fillText(String.format("Coin: %d", field.getCoin()), 900, 600);
+		graphicsContext.setFont(Font.font(20));
+		graphicsContext.fillText(String.format("%d", field.getCoin()), 910, 600);
 
-		// Display Health
-		graphicsContext.setFill(Color.RED);
-		if (field.getTarget() != null)
-			graphicsContext.fillText(String.format("%d", field.getTarget().getHealth()), 40, 470);
+		// Display Health and handle if target was destroyed
+		graphicsContext.setFill(Color.DEEPPINK);
+		if ( field.getTarget() != null) graphicsContext.fillText(String.format("%d", field.getTarget().getHealth()), 810, 600);
+		else {
+			try {
+				this.pause();
+				Main.onGameOver((AnchorPane) (graphicsContext.getCanvas().getParent()));
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		// Handle when all enemies was destroyed
+		List<AbstractSpawner> spawners = (List) GameEntities.getFilteredOverlappedEntities(field.getEntities(), AbstractSpawner.class, 0, 0, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
+		boolean canSpawn = true;
+		for (AbstractSpawner spawner : spawners) {
+			if (!spawner.canSpawn()) {
+				canSpawn = false;
+				break;
+			}
+		}
+		if (!canSpawn) {
+			if (GameEntities.getFilteredOverlappedEntities(field.getEntities(), AbstractEnemy.class, 0, 0, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT).size() <= 0) {
+				this.pause();
+				try {
+					Main.onVictory((AnchorPane) (graphicsContext.getCanvas().getParent()));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 
 
 		// if we have time to spend, do a spin
@@ -153,10 +190,6 @@ public final class GameController extends AnimationTimer {
 		// Start the beat-keeper. Start to call this::tick at a fixed rate.
 		this.scheduledFuture = SCHEDULER.scheduleAtFixedRate(this::tick, 0, Config.GAME_NSPT, TimeUnit.NANOSECONDS);
 		// start the JavaFX loop.
-		super.start();
-	}
-
-	public void continue_ () {
 		super.start();
 	}
 
@@ -232,4 +265,24 @@ public final class GameController extends AnimationTimer {
 		drawer.screenToFieldPosX(mouseEvent.getX());
 		drawer.screenToFieldPosY(mouseEvent.getY());
 	}
+
+
+	/**
+	 * Pause/continue game
+	 */
+	public void pause() {
+		this.stop();
+	}
+	public void continue_() {
+		super.start();
+	}
+
+	/**
+	 * Check coin then create Tower to position where mouse drag
+	 * @param dragEvent
+	 */
+	public void buyTower(DragEvent dragEvent) {
+
+	}
+
 }

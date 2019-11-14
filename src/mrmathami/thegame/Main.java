@@ -1,19 +1,20 @@
 package mrmathami.thegame;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.fxml.FXML;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.DragEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.FontSmoothingType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -24,90 +25,71 @@ public final class Main extends Application {
 		Application.launch(args);
 	}
 
-	public void newGame(MouseEvent mouseEvent) throws IOException {
+	private static GameController gameController;
+
+
+	public void newGame(ActionEvent actionEvent) throws IOException {
 		try {
-			Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene() .getWindow();
-			AnchorPane pane = FXMLLoader.load(this.getClass().getResource("GameScreen.fxml"));
-			stage.setScene(new Scene(pane));
+			Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+			Canvas canvas = new Canvas(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
+			GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+			gameController = new GameController(graphicsContext);
+			canvas.setFocusTraversable(true);
+			graphicsContext.setFontSmoothingType(FontSmoothingType.LCD);
+
+			AnchorPane root = new AnchorPane(canvas);
+			AnchorPane menuInGame = FXMLLoader.load(this.getClass().getResource("MenuInGame.fxml"));
+			root.getChildren().add(menuInGame);
+			gameController.start();
+
+			stage.setScene(new Scene(root));
 			stage.show();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	@FXML
-	Canvas canvas;
-	static boolean isStarted = true;
-	static boolean isPause = false;
-	static GameController gameController;
 
-	public void startGame() throws IOException {
-		if (isStarted) {
-			isStarted = !isStarted;
-			GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-			gameController = new GameController(graphicsContext);
-			canvas.setFocusTraversable(true);
+	static void onGameOver(AnchorPane pane) throws IOException {
+		AnchorPane gameOver = FXMLLoader.load(Main.class.getResource("GameOver.fxml"));
+		pane.getChildren().add(gameOver);
+	}
+	static void onVictory(AnchorPane pane) throws IOException {
+        AnchorPane victory = FXMLLoader.load(Main.class.getResource("Win.fxml"));
+        pane.getChildren().add(victory);
+    }
 
-			graphicsContext.setFontSmoothingType(FontSmoothingType.LCD);
-			gameController.start();
-		}
+	public void backToMenu(ActionEvent actionEvent) { start((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()); }
+	public void nextLevel(ActionEvent actionEvent) {}
+	public void retry(ActionEvent actionEvent) throws IOException {
+		newGame(actionEvent);
+	}
+	public void pause(ActionEvent actionEvent) throws IOException {
+	    gameController.pause();
+	    AnchorPane pane = gameController.getPane();
+        AnchorPane gamePause = FXMLLoader.load(Main.class.getResource("Pause.fxml"));
+        pane.getChildren().add(gamePause);
+	}
+	public void continue_(ActionEvent actionEvent) throws IOException {
+		List list = gameController.getPane().getChildren();
+		list.remove(list.size() - 1);
+		gameController.continue_();
+	}
+	public void quit() {
+		Platform.exit();
+		System.exit(0);
 	}
 
-	public void pause(){
-		if (isPause) {
-			gameController.continue_();
-		} else {
-			gameController.stop();
-		}
-		isPause = !isPause;
-	}
 
-	public void buyTower(MouseEvent mouseEvent) {
+	public void buyTower(DragEvent dragEvent) { gameController.buyTower(dragEvent); }
 
-	}
+
 	@Override
 	public void start(Stage primaryStage) {
-//		final Canvas canvas = new Canvas(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
-//		final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-//		final GameController gameController = new GameController(graphicsContext);
-//
-//		canvas.setFocusTraversable(true);
-//		graphicsContext.setFontSmoothingType(FontSmoothingType.LCD);
-//
-//
-//		// keyboard and mouse events to catch. Add if you need more
-//		canvas.setOnKeyPressed(gameController::keyDownHandler);
-//		canvas.setOnKeyReleased(gameController::keyUpHandler);
-////		canvas.setOnKeyTyped(...);
-//
-//		canvas.setOnMousePressed(gameController::mouseDownHandler);
-//		canvas.setOnMouseReleased(gameController::mouseUpHandler);
-////		canvas.setOnMouseClicked(...);
-////		canvas.setOnMouseMoved(...);
-//
-//
+
 		primaryStage.setResizable(true);
 		primaryStage.setTitle(Config.GAME_NAME);
-//		primaryStage.setOnCloseRequest(gameController::closeRequestHandler);
-//
-//		// Display Start menu
-//		graphicsContext.drawImage(new Image("startmenu.png"), 0, 0, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
-//
-//		// Create start Button
-//		Button startButton = new Button("");
-//		startButton.setBackground(Background.EMPTY);
-//		startButton.setMinSize(210, 70);
-//
-//		AnchorPane anchorPane = new AnchorPane(canvas);
-//		anchorPane.getChildren().add(startButton);
-//		AnchorPane.setBottomAnchor(startButton, 90.0);
-//		AnchorPane.setLeftAnchor(startButton, 370.0);
-//
-//		primaryStage.setScene(new Scene(anchorPane));
-//		primaryStage.show();
-//
-//		startButton.setOnMouseClicked(event -> gameController.start());
-
 
 		try {
 			AnchorPane root = FXMLLoader.load(this.getClass().getResource("StartMenu.fxml"));

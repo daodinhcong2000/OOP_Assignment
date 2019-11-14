@@ -38,11 +38,30 @@ public final class GameStage {
 				for (int y = 0; y < height; y++) {
 					for (int x = 0; x < width; x++) {
 						final int value = scanner.nextInt();
-						if (value == 0) {
-							entities.add(new Road(0, x, y));
-						} else if (value == 1) {
+						if (value == 2) {
 							entities.add(new Mountain(0, x, y));
-						} else {
+							entities.add(new NormalTower(0, x, y));
+						}
+						else
+							if (value == 3) {
+								entities.add(new Mountain(0, x, y));
+								entities.add(new MachineGunTower(0, x, y));
+							}
+						else
+							if (value == 4) {
+								entities.add(new Mountain(0, x, y));
+								entities.add(new SniperTower(0, x, y));
+							}
+						else
+							if (value == 5) {
+								entities.add(new Mountain(0, x, y));
+								entities.add(new SuperTower(0, x, y));
+							}
+						else
+							if (value == 0) entities.add(new Road(0, x, y));
+						else
+							if (value == 1) entities.add(new Mountain(0, x, y));
+						else {
 							throw new InputMismatchException("Unexpected value! Input value: " + value);
 						}
 					}
@@ -89,18 +108,6 @@ public final class GameStage {
 						final int initialDelay = scanner.nextInt();
 						final int numOfSpawn = scanner.nextInt();
 						entities.add(new BossSpawner(0, x, y, w, h, spawnInterval, initialDelay, numOfSpawn));
-					} else if ("NormalTower".equals(value)) {
-						final int x = scanner.nextInt();
-						final int y = scanner.nextInt();
-						entities.add(new NormalTower(0, x, y));
-					} else if ("MachineGunTower".equals(value)) {
-						final int x = scanner.nextInt();
-						final int y = scanner.nextInt();
-						entities.add(new MachineGunTower(0, x, y));
-					} else if ("SniperTower".equals(value)) {
-						final int x = scanner.nextInt();
-						final int y = scanner.nextInt();
-						entities.add(new SniperTower(0, x, y));
 					} else if ("Target".equals(value)) {
 						final int x = scanner.nextInt();
 						final int y = scanner.nextInt();
