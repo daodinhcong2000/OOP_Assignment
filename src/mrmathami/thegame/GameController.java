@@ -2,24 +2,18 @@ package mrmathami.thegame;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mrmathami.thegame.drawer.GameDrawer;
 import mrmathami.thegame.entity.enemy.AbstractEnemy;
 import mrmathami.thegame.entity.tile.spawner.AbstractSpawner;
 import mrmathami.utilities.ThreadFactoryBuilder;
 
-import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executors;
@@ -53,6 +47,12 @@ public final class GameController extends AnimationTimer {
 	 * Kinda advance, modify if you are sure about your change.
 	 */
 	private GameField field;
+
+	/**
+	 * Location to load Game Stage
+	 */
+	String map;
+
 	/**
 	 * Game drawer. Responsible to draw the field every tick.
 	 * Kinda advance, modify if you are sure about your change.
@@ -73,10 +73,10 @@ public final class GameController extends AnimationTimer {
 
 	/**
 	 * The constructor.
-	 *
+	 * @param map location to game stage file
 	 * @param graphicsContext the screen to draw on
 	 */
-	public GameController(GraphicsContext graphicsContext) {
+	public GameController(GraphicsContext graphicsContext, String map) {
 		// The screen to draw on
 		this.graphicsContext = graphicsContext;
 
@@ -86,7 +86,7 @@ public final class GameController extends AnimationTimer {
 
 		// The game field. Please consider create another way to load a game field.
 		// TODO: I don't have much time, so, spawn some wall then :)
-		this.field = new GameField(Objects.requireNonNull(GameStage.load("/stage/level0.txt")));
+		this.field = new GameField(Objects.requireNonNull(GameStage.load(map)));
 
 		// The drawer. Nothing fun here.
 		this.drawer = new GameDrawer(graphicsContext, field);
@@ -97,6 +97,10 @@ public final class GameController extends AnimationTimer {
 		// Can be modified to support zoom in / zoom out of the map.
 		drawer.setFieldViewRegion(0.0, 0.0, Config.TILE_SIZE);
 	}
+
+	/**
+	 * @return current pane
+	 */
 	public AnchorPane getPane(){
 		return (AnchorPane) (graphicsContext.getCanvas().getParent());
 	}
@@ -140,7 +144,7 @@ public final class GameController extends AnimationTimer {
 		graphicsContext.fillText(String.format("MSPT: %3.2f", mspt), 0, 12);
 
 		// Display coin from kill ememy
-		graphicsContext.setFont(Font.font(20));
+		graphicsContext.setFont(Font.font("Cooper Black", 20));
 		graphicsContext.fillText(String.format("%d", field.getCoin()), 910, 600);
 
 		// Display Health and handle if target was destroyed
@@ -156,8 +160,8 @@ public final class GameController extends AnimationTimer {
 			}
 		}
 
-		// Handle when all enemies was destroyed
-		List<AbstractSpawner> spawners = (List) GameEntities.getFilteredOverlappedEntities(field.getEntities(), AbstractSpawner.class, 0, 0, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
+		// Handle when all enemies was destroyed, display win pane
+		Collection<AbstractSpawner> spawners = GameEntities.getFilteredOverlappedEntities(field.getEntities(), AbstractSpawner.class, 0, 0, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
 		boolean canSpawn = true;
 		for (AbstractSpawner spawner : spawners) {
 			if (!spawner.canSpawn()) {
@@ -169,7 +173,7 @@ public final class GameController extends AnimationTimer {
 			if (GameEntities.getFilteredOverlappedEntities(field.getEntities(), AbstractEnemy.class, 0, 0, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT).size() <= 0) {
 				this.pause();
 				try {
-					Main.onVictory((AnchorPane) (graphicsContext.getCanvas().getParent()));
+					Main.onWin((AnchorPane) (graphicsContext.getCanvas().getParent()));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

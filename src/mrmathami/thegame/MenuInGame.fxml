@@ -29,7 +29,7 @@
             <Font name="Cooper Black" size="13.0" />
          </font>
       </Label>
-      <Circle fill="RED" layoutX="400.0" layoutY="565.0" onDragDropped="#buyTower" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fill="RED" layoutX="400.0" layoutY="565.0" onDragDropped="#buyTower" onMouseClicked="#pause" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fill="#b513b5" layoutX="526.0" layoutY="565.0" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fill="#711111" layoutX="639.0" layoutY="565.0" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="362.0" layoutY="592.0" text="Normal Tower" textAlignment="CENTER" textFill="RED">
