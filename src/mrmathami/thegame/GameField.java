@@ -53,7 +53,7 @@ public final class GameField {
 		return tickCount;
 	}
 
-	public long getCoin() {
+	long getCoin() {
 		return coin;
 	}
 
@@ -82,8 +82,12 @@ public final class GameField {
 		if (entity.isBeingOverlapped(0.0, 0.0, width, height)) spawnEntities.add(entity);
 	}
 
-	public final void updateCoin(long reward) {
-		this.coin += reward;
+	public final void updateCoin(long value) {
+		this.coin += value;
+	}
+
+	final void removeEntity(GameEntity entity) {
+		entities.remove(entity);
 	}
 
 	/**
@@ -98,7 +102,7 @@ public final class GameField {
 	 * 2.2. Destroy entities that are outside the field.
 	 * 3. Spawn Entity: Add entities that are marked to be spawned.
 	 */
-	public final void tick() {
+	final void tick() {
 		this.tickCount += 1;
 
 		// 1.1. Update UpdatableEntity

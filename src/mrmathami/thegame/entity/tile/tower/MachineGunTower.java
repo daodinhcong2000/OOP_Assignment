@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 public class MachineGunTower extends AbstractTower<MachineGunBullet> {
 
     public MachineGunTower(long createdTick, long posX, long posY) {
-        super(createdTick, posX, posY, Config.MACHINE_GUN_TOWER_RANGE, Config.MACHINE_GUN_TOWER_SPEED);
+        super(createdTick, posX, posY, Config.MACHINE_GUN_TOWER_RANGE, Config.MACHINE_GUN_TOWER_SPEED, Config.MACHINE_GUN_TOWER_COST);
     }
 
     @Nonnull

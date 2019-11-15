@@ -8,14 +8,13 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.DragEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.FontSmoothingType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -28,7 +27,7 @@ public final class Main extends Application {
 	}
 
 	private static GameController gameController;
-	private final String [] listMap = {"/stage/level0.txt", "/stage/level1.txt", "/stage/level2.txt", "/stage/level3.txt", "/stage/level4.txt"};
+	private final String [] listMap = {"/stage/level1.txt", "/stage/level2.txt", "/stage/level3.txt", "/stage/level4.txt", "/stage/level5.txt"};
 	private static int level = 0;
 
 	/**
@@ -37,7 +36,7 @@ public final class Main extends Application {
 	 * @param map link to file.txt which contain game stage
 	 * @throws IOException
 	 */
-	public void newGame(ActionEvent actionEvent, String map) throws IOException {
+	private void newGame(ActionEvent actionEvent, String map) throws IOException {
 		try {
 			Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
@@ -131,7 +130,7 @@ public final class Main extends Application {
         AnchorPane gamePause = FXMLLoader.load(Main.class.getResource("Pause.fxml"));
         pane.getChildren().add(gamePause);
 	}
-	public void continue_() throws IOException {
+	public void continue_() {
 		List list = gameController.getPane().getChildren();
 		list.remove(list.size() - 1);
 		gameController.continue_();
@@ -145,9 +144,32 @@ public final class Main extends Application {
 		System.exit(0);
 	}
 
+	/**
+	 * Buy tower
+	 * @param mouseEvent
+	 * @param towerName
+	 */
+	private void buyTower(MouseEvent mouseEvent, String towerName) {
+		System.out.println("Start buying tower");
+		Circle currentTower = (Circle) mouseEvent.getSource();
+		Circle copyTower = new Circle(currentTower.getRadius());
+		copyTower.setFill(currentTower.getFill());
+		gameController.getPane().getChildren().add(copyTower);
 
-	public void buyTower(DragEvent dragEvent) { gameController.buyTower(dragEvent); }
-
+		currentTower.setOnMouseDragged(mouseEvent1 -> {
+			System.out.println("Choosing location");
+			copyTower.setCenterX(mouseEvent1.getSceneX());
+			copyTower.setCenterY(mouseEvent1.getSceneY());
+		});
+		currentTower.setOnMouseReleased(mouseevent2 -> {
+			gameController.getPane().getChildren().remove(copyTower);
+			gameController.buyTower(mouseevent2, towerName);
+		});
+	}
+	public void buyNormalTower(MouseEvent mouseEvent) {buyTower(mouseEvent, "normal tower");}
+	public void buyMachineGunTower(MouseEvent mouseEvent) {buyTower(mouseEvent, "machine gun tower");}
+	public void buySniperTower(MouseEvent mouseEvent) {buyTower(mouseEvent, "sniper tower");}
+	public void buySuperTower(MouseEvent mouseEvent) {buyTower(mouseEvent, "super tower");}
 
 	@Override
 	public void start(Stage primaryStage) {

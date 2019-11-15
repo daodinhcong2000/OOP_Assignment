@@ -6,7 +6,7 @@ public final class Config {
 	/**
 	 * Game name. Change it if you want.
 	 */
-	public static final String GAME_NAME = "Tower Defense";
+	public static final String GAME_NAME = "Tower Defense - OOP Assignment";
 	/**
 	 * Ticks per second
 	 */
@@ -64,7 +64,7 @@ public final class Config {
 	public static final long SNIPER_BULLET_STRENGTH = 120;
 	public static final double SNIPER_BULLET_SPEED = 0.5;
 
-	public static final long SUPER_BULLET_TTL = 10;
+	public static final long SUPER_BULLET_TTL = 30;
 	public static final long SUPER_BULLET_STRENGTH = 200;
 	public static final double SUPER_BULLET_SPEED = 1.0;
 
@@ -78,7 +78,7 @@ public final class Config {
 
 	public static final long MACHINE_GUN_TOWER_SPEED = 5;
 	public static final double MACHINE_GUN_TOWER_RANGE = 4.0;
-	public static final int MACHINE_TOWER_COST = 3;
+	public static final int MACHINE_GUN_TOWER_COST = 3;
 
 	public static final long SNIPER_TOWER_SPEED = 60;
 	public static final double SNIPER_TOWER_RANGE = 8.0;

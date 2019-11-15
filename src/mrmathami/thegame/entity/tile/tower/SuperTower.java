@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 
 public class SuperTower extends AbstractTower<SuperBullet> {
     public SuperTower(long createdTick, long posX, long posY) {
-        super(createdTick, posX, posY, Config.SUPER_TOWER_RANGE, Config.SUPER_TOWER_SPEED);
+        super(createdTick, posX, posY, Config.SUPER_TOWER_RANGE, Config.SUPER_TOWER_SPEED, Config.SUPER_TOWER_COST);
     }
 
     @Nonnull

@@ -9,10 +9,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.WindowEvent;
 import mrmathami.thegame.drawer.GameDrawer;
+import mrmathami.thegame.entity.GameEntity;
 import mrmathami.thegame.entity.enemy.AbstractEnemy;
+import mrmathami.thegame.entity.tile.Mountain;
 import mrmathami.thegame.entity.tile.spawner.AbstractSpawner;
+import mrmathami.thegame.entity.tile.tower.*;
 import mrmathami.utilities.ThreadFactoryBuilder;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -47,11 +51,6 @@ public final class GameController extends AnimationTimer {
 	 * Kinda advance, modify if you are sure about your change.
 	 */
 	private GameField field;
-
-	/**
-	 * Location to load Game Stage
-	 */
-	String map;
 
 	/**
 	 * Game drawer. Responsible to draw the field every tick.
@@ -211,67 +210,6 @@ public final class GameController extends AnimationTimer {
 	}
 
 	/**
-	 * Key down handler.
-	 *
-	 * @param keyEvent the key that you press down
-	 */
-	final void keyDownHandler(KeyEvent keyEvent) {
-		final KeyCode keyCode = keyEvent.getCode();
-		if (keyCode == KeyCode.W) {
-		} else if (keyCode == KeyCode.S) {
-		} else if (keyCode == KeyCode.A) {
-		} else if (keyCode == KeyCode.D) {
-		} else if (keyCode == KeyCode.I) {
-		} else if (keyCode == KeyCode.J) {
-		} else if (keyCode == KeyCode.K) {
-		} else if (keyCode == KeyCode.L) {
-		}
-	}
-
-	/**
-	 * Key up handler.
-	 *
-	 * @param keyEvent the key that you release up.
-	 */
-	final void keyUpHandler(KeyEvent keyEvent) {
-		final KeyCode keyCode = keyEvent.getCode();
-		if (keyCode == KeyCode.W) {
-		} else if (keyCode == KeyCode.S) {
-		} else if (keyCode == KeyCode.A) {
-		} else if (keyCode == KeyCode.D) {
-		} else if (keyCode == KeyCode.I) {
-		} else if (keyCode == KeyCode.J) {
-		} else if (keyCode == KeyCode.K) {
-		} else if (keyCode == KeyCode.L) {
-		}
-	}
-
-	/**
-	 * Mouse down handler.
-	 *
-	 * @param mouseEvent the mouse button you press down.
-	 */
-	final void mouseDownHandler(MouseEvent mouseEvent) {
-		mouseEvent.getButton(); // which mouse button?
-		// Screen coordinate. Remember to convert to field coordinate
-		drawer.screenToFieldPosX(mouseEvent.getX());
-		drawer.screenToFieldPosY(mouseEvent.getY());
-	}
-
-	/**
-	 * Mouse up handler.
-	 *
-	 * @param mouseEvent the mouse button you release up.
-	 */
-	final void mouseUpHandler(MouseEvent mouseEvent) {
-		mouseEvent.getButton(); // which mouse button?
-		// Screen coordinate. Remember to convert to field coordinate
-		drawer.screenToFieldPosX(mouseEvent.getX());
-		drawer.screenToFieldPosY(mouseEvent.getY());
-	}
-
-
-	/**
 	 * Pause/continue game
 	 */
 	public void pause() {
@@ -282,11 +220,61 @@ public final class GameController extends AnimationTimer {
 	}
 
 	/**
-	 * Check coin then create Tower to position where mouse drag
-	 * @param dragEvent
+	 * Create Tower to position where mouse drag if enough coin
+	 * @param mouseEvent
 	 */
-	public void buyTower(DragEvent dragEvent) {
+	public void buyTower(MouseEvent mouseEvent, String towerName) {
+		int fieldPosX = (int) (mouseEvent.getSceneX() / Config.TILE_SIZE);
+		int fieldPosY = (int) (mouseEvent.getSceneY() / Config.TILE_SIZE);
+		System.out.println("(PosX,PosY) = (" + fieldPosX + "," + fieldPosY + ")");
+		if (fieldPosX >= Config.TILE_HORIZONTAL || fieldPosY >= Config.TILE_VERTICAL) {
+			System.out.println("Position is out of screen !!");
+			System.out.println(towerName + " purchase failed !!");
+			return;
+		}
 
+		List<GameEntity> entities = (ArrayList<GameEntity>) GameEntities.getContainedEntities(this.field.getEntities(),fieldPosX, fieldPosY, 1, 1);
+		boolean canBuy = true;
+		for (GameEntity entity : entities) if (!(entity instanceof AbstractTower) && !(entity instanceof Mountain)) canBuy = false;
+
+		if (canBuy) {
+			AbstractTower newTower;
+			switch (towerName) {
+				case "normal tower": {
+					newTower = new NormalTower(0, fieldPosX, fieldPosY);
+					break;
+				}
+				case "machine gun tower": {
+					newTower = new MachineGunTower(0, fieldPosX, fieldPosY);
+					break;
+				}
+				case "sniper tower": {
+					newTower = new SniperTower(0, fieldPosX, fieldPosY);
+					break;
+				}
+				case "super tower": {
+					newTower = new SuperTower(0, fieldPosX, fieldPosY);
+					break;
+				}
+				default:
+					newTower = new NormalTower(0, fieldPosX, fieldPosY);
+					System.out.println(towerName + "is not exist, buy normal tower !!");
+			}
+			if (newTower.getCost() <= this.field.getCoin()) {
+				for (GameEntity entity : entities) {
+					if (entity instanceof AbstractTower) {
+						this.field.removeEntity(entity);
+						this.field.updateCoin(((AbstractTower) entity).getCost());
+					}
+				}
+				this.field.doSpawn(newTower);
+				this.field.updateCoin(-newTower.getCost());
+
+				System.out.println("Successfully bought " + towerName + " !!");
+				return;
+			}
+			else System.out.println("Not enough coin to buy " + towerName);
+		}
+		System.out.println(towerName + " purchase failed !!");
 	}
-
 }

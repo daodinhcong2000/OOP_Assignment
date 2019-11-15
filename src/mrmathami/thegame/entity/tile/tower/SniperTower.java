@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 public class SniperTower extends AbstractTower<SniperBullet>{
 
     public SniperTower(long createdTick, long posX, long posY) {
-        super(createdTick, posX, posY, Config.SNIPER_TOWER_RANGE, Config.SNIPER_TOWER_SPEED);
+        super(createdTick, posX, posY, Config.SNIPER_TOWER_RANGE, Config.SNIPER_TOWER_SPEED, Config.SNIPPER_TOWER_COST);
     }
 
     @Nonnull

@@ -8,21 +8,25 @@ import mrmathami.thegame.entity.enemy.AbstractEnemy;
 import mrmathami.thegame.entity.tile.AbstractTile;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public abstract class AbstractTower<E extends AbstractBullet> extends AbstractTile implements UpdatableEntity {
 	private final double range;
 	private final long speed;
+	private final int cost;
 
 	private long tickDown;
 
-	protected AbstractTower(long createdTick, long posX, long posY, double range, long speed) {
+	protected AbstractTower(long createdTick, long posX, long posY, double range, long speed, int cost) {
 		super(createdTick, posX, posY, 1L, 1L);
 		this.range = range;
 		this.speed = speed;
+		this.cost = cost;
 		this.tickDown = 0;
+	}
+
+	public int getCost() {
+		return cost;
 	}
 
 	@Override
