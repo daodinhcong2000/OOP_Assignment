@@ -2,6 +2,7 @@ package mrmathami.thegame;
 
 
 import mrmathami.thegame.entity.*;
+import mrmathami.thegame.entity.bullet.AbstractBullet;
 import mrmathami.thegame.entity.tile.Target;
 
 import javax.annotation.Nonnull;
@@ -139,6 +140,7 @@ public final class GameField {
 
 		// 3. Spawn entities
 		for (GameEntity entity : spawnEntities) {
+			if (entity instanceof AbstractBullet) GameMusic.playShotMusic();
 			entities.add(entity);
 			if (entity instanceof SpawnListener) ((SpawnListener) entity).onSpawn(this);
 		}

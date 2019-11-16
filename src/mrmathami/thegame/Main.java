@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
@@ -38,6 +39,9 @@ public final class Main extends Application {
 	 */
 	private void newGame(ActionEvent actionEvent, String map) throws IOException {
 		try {
+			GameMusic.stopAllMusic();
+			GameMusic.playClickMusic();
+			GameMusic.playInGameMusic();
 			Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
 			Canvas canvas = new Canvas(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
@@ -65,6 +69,7 @@ public final class Main extends Application {
 	 * @throws IOException
 	 */
 	public void selectLevel(ActionEvent actionEvent) throws IOException {
+	    GameMusic.playClickMusic();
 		Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 		AnchorPane selectLevel = FXMLLoader.load(this.getClass().getResource("SelectLevel.fxml"));
 		stage.setScene(new Scene(selectLevel));
@@ -103,19 +108,48 @@ public final class Main extends Application {
 	 * @throws IOException
 	 */
 	static void onGameOver(AnchorPane pane) throws IOException {
+		GameMusic.stopAllMusic();
+		GameMusic.playLoseMusic();
 		AnchorPane gameOver = FXMLLoader.load(Main.class.getResource("GameOver.fxml"));
 		pane.getChildren().add(gameOver);
 	}
 	static void onWin(AnchorPane pane) throws IOException {
+		GameMusic.stopAllMusic();
+		GameMusic.playWinMusic();
         AnchorPane victory = FXMLLoader.load(Main.class.getResource("Win.fxml"));
         pane.getChildren().add(victory);
     }
 
 	/**
-	 * handle some event in game
-	 * @param actionEvent
+	 * The methods below handle some event in game
 	 */
+	public void setSFX(ActionEvent actionEvent) {
+		GameMusic.playClickMusic();
+		Button button = (Button) actionEvent.getSource();
+		if (GameMusic.SFXOn) {
+			button.setText("SFX: OFF");
+			GameMusic.SFXOn = false;
+		}
+		else {
+			button.setText("SFX: ON");
+			GameMusic.SFXOn = true;
+		}
+	}
+	public void setMute(ActionEvent actionEvent) {
+		GameMusic.playClickMusic();
+		Button button = (Button) actionEvent.getSource();
+
+		if (GameMusic.isAllMute()) {
+			button.setText("Mute: OFF");
+			GameMusic.setAllMute(false);
+		}
+		else {
+			button.setText("Mute: ON");
+			GameMusic.setAllMute(true);
+		}
+	}
 	public void backToMenu(ActionEvent actionEvent) {
+		GameMusic.playClickMusic();
 		start((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
 	}
 	public void nextLevel(ActionEvent actionEvent) throws IOException {
@@ -125,12 +159,14 @@ public final class Main extends Application {
 		newGame(actionEvent, listMap[level]);
 	}
 	public void pause() throws IOException {
+	    GameMusic.playClickMusic();
 	    gameController.pause();
 	    AnchorPane pane = gameController.getPane();
         AnchorPane gamePause = FXMLLoader.load(Main.class.getResource("Pause.fxml"));
         pane.getChildren().add(gamePause);
 	}
 	public void continue_() {
+		GameMusic.playClickMusic();
 		List list = gameController.getPane().getChildren();
 		list.remove(list.size() - 1);
 		gameController.continue_();
@@ -140,6 +176,7 @@ public final class Main extends Application {
 	 * quit game, close window
 	 */
 	public void quit() {
+	    GameMusic.playClickMusic();
 		Platform.exit();
 		System.exit(0);
 	}
@@ -181,6 +218,8 @@ public final class Main extends Application {
 			AnchorPane root = FXMLLoader.load(this.getClass().getResource("StartMenu.fxml"));
 			primaryStage.setScene(new Scene(root));
 			primaryStage.show();
+			GameMusic.stopAllMusic();
+			GameMusic.playStartMusic();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

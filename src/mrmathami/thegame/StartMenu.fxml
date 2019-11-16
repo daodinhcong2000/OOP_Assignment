@@ -28,5 +28,15 @@
             <Font name="Cooper Black" size="22.0" />
          </font>
       </Button>
+      <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutY="-15.0" mnemonicParsing="false" onAction="#setMute" opacity="0.0" prefHeight="67.0" prefWidth="74.0">
+         <font>
+            <Font name="Cooper Black" size="49.0" />
+         </font>
+      </Button>
+      <Button layoutX="66.0" layoutY="-17.0" mnemonicParsing="false" onAction="#setSFX" opacity="0.0" prefHeight="66.0" prefWidth="90.0" text="SFX">
+         <font>
+            <Font name="Cooper Black" size="49.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

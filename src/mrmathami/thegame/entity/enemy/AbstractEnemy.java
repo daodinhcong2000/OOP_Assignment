@@ -2,6 +2,7 @@ package mrmathami.thegame.entity.enemy;
 
 import mrmathami.thegame.GameEntities;
 import mrmathami.thegame.GameField;
+import mrmathami.thegame.GameMusic;
 import mrmathami.thegame.entity.*;
 import mrmathami.thegame.entity.tile.Road;
 
@@ -76,6 +77,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 	@Override
 	public final void onDestroy(@Nonnull GameField field) {
 		// TODO: reward
+		GameMusic.playDestroyMusic();
 		field.updateCoin(reward);
 	}
 

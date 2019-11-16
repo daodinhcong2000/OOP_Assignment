@@ -134,6 +134,9 @@ public final class GameController extends AnimationTimer {
 		// draw a new frame, as fast as possible.
 		drawer.render();
 
+		// Fixed MSPT
+		while (System.nanoTime() - startNs <= 50000000);
+
 		// MSPT display. MSPT stand for Milliseconds Per Tick.
 		// It means how many ms your game spend to update and then draw the game once.
 		// Draw it out mostly for debug
@@ -144,7 +147,7 @@ public final class GameController extends AnimationTimer {
 
 		// Display coin from kill ememy
 		graphicsContext.setFont(Font.font("Cooper Black", 20));
-		graphicsContext.fillText(String.format("%d", field.getCoin()), 910, 600);
+		graphicsContext.fillText(String.format("%d", field.getCoin()), 908, 600);
 
 		// Display Health and handle if target was destroyed
 		graphicsContext.setFill(Color.DEEPPINK);

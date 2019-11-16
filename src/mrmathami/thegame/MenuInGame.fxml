@@ -9,12 +9,12 @@
 
 <AnchorPane prefHeight="640.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mrmathami.thegame.Main">
    <children>
-      <Button layoutX="147.0" layoutY="550.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="122.0" text="Mute">
+      <Button layoutX="96.0" layoutY="550.0" mnemonicParsing="false" onAction="#setMute" prefHeight="78.0" prefWidth="102.0" text="Mute">
          <font>
             <Font name="Cooper Black" size="13.0" />
          </font>
       </Button>
-      <ToggleButton layoutX="14.0" layoutY="550.0" mnemonicParsing="false" onAction="#pause" prefHeight="78.0" prefWidth="122.0" text="Pause">
+      <ToggleButton layoutX="14.0" layoutY="550.0" mnemonicParsing="false" onAction="#pause" prefHeight="78.0" prefWidth="70.0" text="Pause">
          <font>
             <Font name="Cooper Black" size="13.0" />
          </font>
@@ -83,5 +83,10 @@
             <Font name="Cooper Black" size="14.0" />
          </font>
       </Label>
+      <Button layoutX="210.0" layoutY="550.0" mnemonicParsing="false" onAction="#setSFX" prefHeight="78.0" prefWidth="83.0" text="SFX">
+         <font>
+            <Font name="Cooper Black" size="13.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
