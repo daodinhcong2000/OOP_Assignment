@@ -258,7 +258,7 @@ public final class GameController extends AnimationTimer {
 		int fieldPosX = (int) (mouseEvent.getSceneX() / Config.TILE_SIZE);
 		int fieldPosY = (int) (mouseEvent.getSceneY() / Config.TILE_SIZE);
 		System.out.println("(PosX,PosY) = (" + fieldPosX + "," + fieldPosY + ")");
-		if (fieldPosX >= Config.TILE_HORIZONTAL || fieldPosY >= Config.TILE_VERTICAL) {
+		if (fieldPosX >= Config.TILE_HORIZONTAL || fieldPosY >= Config.TILE_VERTICAL - 3) {
 			System.out.println("Position is out of screen !!");
 			System.out.println(towerName + " purchase failed !!");
 			return;

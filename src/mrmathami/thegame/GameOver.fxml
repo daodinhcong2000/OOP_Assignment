@@ -22,7 +22,7 @@
             <Font name="Cooper Black" size="15.0" />
          </font>
       </Button>
-      <TextField alignment="CENTER" layoutX="342.0" layoutY="181.0" prefHeight="157.0" prefWidth="275.0" text="GAME OVER !!">
+      <TextField alignment="CENTER" layoutX="299.0" layoutY="181.0" prefHeight="158.0" prefWidth="353.0" text="Defense failed !!!">
          <font>
             <Font name="Cooper Black" size="32.0" />
          </font>

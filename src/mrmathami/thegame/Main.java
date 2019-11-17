@@ -13,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.FontSmoothingType;
 import javafx.stage.Stage;
 
@@ -37,9 +36,8 @@ public final class Main extends Application {
 	 * Display game stage
 	 * @param actionEvent
 	 * @param map link to file.txt which contain game stage
-	 * @throws IOException
 	 */
-	private void newGame(ActionEvent actionEvent, String map) throws IOException {
+	private void newGame(ActionEvent actionEvent, String map) {
 		try {
 			GameMusic.stopAllMusic();
 			GameMusic.playClickMusic();
@@ -87,25 +85,24 @@ public final class Main extends Application {
 	/**
 	 * Display game stage with corresponding level
 	 * @param actionEvent
-	 * @throws IOException
 	 */
-	public void loadLevel1(ActionEvent actionEvent) throws IOException {
+	public void loadLevel1(ActionEvent actionEvent) {
 		level = 0;
 		newGame(actionEvent, listMap[0]);
 	}
-	public void loadLevel2(ActionEvent actionEvent) throws IOException {
+	public void loadLevel2(ActionEvent actionEvent) {
 		level = 1;
 		newGame(actionEvent, listMap[1]);
 	}
-	public void loadLevel3(ActionEvent actionEvent) throws IOException {
+	public void loadLevel3(ActionEvent actionEvent) {
 		level = 2;
 		newGame(actionEvent, listMap[2]);
 	}
-	public void loadLevel4(ActionEvent actionEvent) throws IOException {
+	public void loadLevel4(ActionEvent actionEvent) {
 		level = 3;
 		newGame(actionEvent, listMap[3]);
 	}
-	public void loadLevel5(ActionEvent actionEvent) throws IOException {
+	public void loadLevel5(ActionEvent actionEvent) {
 		level = 4;
 		newGame(actionEvent, listMap[4]);
 	}
@@ -160,11 +157,11 @@ public final class Main extends Application {
 		GameMusic.playClickMusic();
 		start((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
 	}
-	public void nextLevel(ActionEvent actionEvent) throws IOException {
+	public void nextLevel(ActionEvent actionEvent) {
 		if (level < listMap.length - 1) newGame(actionEvent, listMap[++level]);
 		else backToMenu(actionEvent);
 	}
-	public void retry(ActionEvent actionEvent) throws IOException {
+	public void retry(ActionEvent actionEvent) {
 		newGame(actionEvent, listMap[level]);
 	}
 	public void pause() throws IOException {

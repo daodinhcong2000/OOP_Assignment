@@ -26,7 +26,7 @@ public final class GameStage {
 	}
 
 	@Nullable
-	public static GameStage load(@Nonnull String name) {
+	static GameStage load(@Nonnull String name) {
 		try (final InputStream stream = GameStage.class.getResourceAsStream(name)) {
 			if (stream == null) throw new IOException("Resource not found! Resource name: " + name);
 			final Scanner scanner = new Scanner(stream);
@@ -175,7 +175,7 @@ public final class GameStage {
 	}
 
 	@Nonnull
-	public final List<GameEntity> getEntities() {
+	final List<GameEntity> getEntities() {
 		return entities;
 	}
 }

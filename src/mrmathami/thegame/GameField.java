@@ -76,7 +76,7 @@ public final class GameField {
 
 	// Get Entities
 	final <E extends GameEntity> List<E> getEntities(Class<E> entityClass) {
-		return new ArrayList<E>(GameEntities.getFilteredOverlappedEntities(getAllEntities(), entityClass,
+		return new ArrayList<>(GameEntities.getFilteredOverlappedEntities(getAllEntities(), entityClass,
 				0, 0, getWidth(), getHeight()));
 	}
 

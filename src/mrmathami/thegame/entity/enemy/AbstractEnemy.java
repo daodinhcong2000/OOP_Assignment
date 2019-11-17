@@ -21,7 +21,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 	private double speed;
 	private long reward;
 
-	protected AbstractEnemy(long createdTick, double posX, double posY, double size, long health, long armor, double speed, long reward) {
+	AbstractEnemy(long createdTick, double posX, double posY, double size, long health, long armor, double speed, long reward) {
 		super(createdTick, posX, posY, size, size);
 		this.health = health;
 		this.armor = armor;
