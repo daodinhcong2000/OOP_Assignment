@@ -53,7 +53,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 		final double enemyPosY = getPosY();
 		final double enemyWidth = getWidth();
 		final double enemyHeight = getHeight();
-		final Collection<GameEntity> overlappableEntities = GameEntities.getOverlappedEntities(field.getEntities(),
+		final Collection<GameEntity> overlappableEntities = GameEntities.getOverlappedEntities(field.getAllEntities(),
 				getPosX() - speed, getPosY() - speed, speed + getWidth() + speed, speed + getHeight() + speed);
 		double minimumDistance = Double.MAX_VALUE;
 		double newPosX = enemyPosX;

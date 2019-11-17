@@ -2,16 +2,20 @@ package mrmathami.thegame;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontSmoothingType;
 import javafx.stage.WindowEvent;
 import mrmathami.thegame.drawer.GameDrawer;
 import mrmathami.thegame.entity.GameEntity;
+import mrmathami.thegame.entity.bullet.AbstractBullet;
 import mrmathami.thegame.entity.enemy.AbstractEnemy;
 import mrmathami.thegame.entity.tile.Mountain;
+import mrmathami.thegame.entity.tile.Road;
 import mrmathami.thegame.entity.tile.spawner.AbstractSpawner;
 import mrmathami.thegame.entity.tile.tower.*;
 import mrmathami.utilities.ThreadFactoryBuilder;
@@ -97,11 +101,31 @@ public final class GameController extends AnimationTimer {
 		drawer.setFieldViewRegion(0.0, 0.0, Config.TILE_SIZE);
 	}
 
+    /**
+     * Draw Mountain, Taget, Spawn and road, which don't need to draw again in game
+     */
+	void drawMap(Canvas canvas) {
+		// Draw all Tiles
+		GraphicsContext graphicsContext1 = canvas.getGraphicsContext2D();
+		graphicsContext1.setFontSmoothingType(FontSmoothingType.LCD);
+
+		GameDrawer drawer1 = new GameDrawer(graphicsContext1, field);
+		drawer1.setFieldViewRegion(0.0, 0.0, Config.TILE_SIZE);
+		List<GameEntity> tiles = new ArrayList<>(field.getEntities(Mountain.class));
+		tiles.addAll(field.getEntities(Road.class));
+		tiles.addAll(field.getEntities(AbstractSpawner.class));
+		tiles.add(field.getTarget());
+		drawer1.render(tiles);
+
+		graphicsContext1.setFill(Color.CADETBLUE);
+		graphicsContext1.fillRect(0, field.getHeight() * Config.TILE_SIZE, field.getWidth() * Config.TILE_SIZE, Config.SCREEN_HEIGHT);
+	}
+
 	/**
 	 * @return current pane
 	 */
-	public AnchorPane getPane(){
-		return (AnchorPane) (graphicsContext.getCanvas().getParent());
+	AnchorPane getPane(){
+		return (AnchorPane) (this.graphicsContext.getCanvas().getParent());
 	}
 
 	/**
@@ -132,10 +156,14 @@ public final class GameController extends AnimationTimer {
 //		if (currentTick != tick) return;
 
 		// draw a new frame, as fast as possible.
-		drawer.render();
+		List<GameEntity> entities = new ArrayList<>();
+		entities.addAll(field.getEntities(AbstractEnemy.class));
+		entities.addAll(field.getEntities(AbstractBullet.class));
+		entities.addAll(field.getEntities(AbstractTower.class));
+		drawer.render(entities);
 
 		// Fixed MSPT
-		while (System.nanoTime() - startNs <= 50000000);
+		while (System.nanoTime() - startNs <= 70000000);
 
 		// MSPT display. MSPT stand for Milliseconds Per Tick.
 		// It means how many ms your game spend to update and then draw the game once.
@@ -163,7 +191,7 @@ public final class GameController extends AnimationTimer {
 		}
 
 		// Handle when all enemies was destroyed, display win pane
-		Collection<AbstractSpawner> spawners = GameEntities.getFilteredOverlappedEntities(field.getEntities(), AbstractSpawner.class, 0, 0, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
+		Collection<AbstractSpawner> spawners = GameEntities.getFilteredOverlappedEntities(field.getAllEntities(), AbstractSpawner.class, 0, 0, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
 		boolean canSpawn = true;
 		for (AbstractSpawner spawner : spawners) {
 			if (!spawner.canSpawn()) {
@@ -172,7 +200,7 @@ public final class GameController extends AnimationTimer {
 			}
 		}
 		if (!canSpawn) {
-			if (GameEntities.getFilteredOverlappedEntities(field.getEntities(), AbstractEnemy.class, 0, 0, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT).size() <= 0) {
+			if (GameEntities.getFilteredOverlappedEntities(field.getAllEntities(), AbstractEnemy.class, 0, 0, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT).size() <= 0) {
 				this.pause();
 				try {
 					Main.onWin((AnchorPane) (graphicsContext.getCanvas().getParent()));
@@ -215,10 +243,10 @@ public final class GameController extends AnimationTimer {
 	/**
 	 * Pause/continue game
 	 */
-	public void pause() {
+    void pause() {
 		this.stop();
 	}
-	public void continue_() {
+	void continue_() {
 		super.start();
 	}
 
@@ -226,7 +254,7 @@ public final class GameController extends AnimationTimer {
 	 * Create Tower to position where mouse drag if enough coin
 	 * @param mouseEvent
 	 */
-	public void buyTower(MouseEvent mouseEvent, String towerName) {
+    void buyTower(MouseEvent mouseEvent, String towerName) {
 		int fieldPosX = (int) (mouseEvent.getSceneX() / Config.TILE_SIZE);
 		int fieldPosY = (int) (mouseEvent.getSceneY() / Config.TILE_SIZE);
 		System.out.println("(PosX,PosY) = (" + fieldPosX + "," + fieldPosY + ")");
@@ -236,7 +264,7 @@ public final class GameController extends AnimationTimer {
 			return;
 		}
 
-		List<GameEntity> entities = (ArrayList<GameEntity>) GameEntities.getContainedEntities(this.field.getEntities(),fieldPosX, fieldPosY, 1, 1);
+		List<GameEntity> entities = (ArrayList<GameEntity>) GameEntities.getContainedEntities(this.field.getAllEntities(),fieldPosX, fieldPosY, 1, 1);
 		boolean canBuy = true;
 		for (GameEntity entity : entities) if (!(entity instanceof AbstractTower) && !(entity instanceof Mountain)) canBuy = false;
 

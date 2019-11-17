@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="640.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mrmathami.thegame.Main">
+<AnchorPane prefHeight="640.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/10.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mrmathami.thegame.Main">
    <children>
       <ImageView fitHeight="640.0" fitWidth="960.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" scaleY="1.2">
          <image>

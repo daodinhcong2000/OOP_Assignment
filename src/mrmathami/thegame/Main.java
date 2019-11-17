@@ -3,12 +3,14 @@ package mrmathami.thegame;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
@@ -44,16 +46,22 @@ public final class Main extends Application {
 			GameMusic.playInGameMusic();
 			Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
+			Canvas canvasToDrawMap = new Canvas(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
+			canvasToDrawMap.setFocusTraversable(true);
+			AnchorPane root = new AnchorPane(canvasToDrawMap);
+
 			Canvas canvas = new Canvas(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
 			GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 			gameController = new GameController(graphicsContext, map);
 			canvas.setFocusTraversable(true);
 			graphicsContext.setFontSmoothingType(FontSmoothingType.LCD);
+			root.getChildren().add(canvas);
 
-			AnchorPane root = new AnchorPane(canvas);
 			AnchorPane menuInGame = FXMLLoader.load(this.getClass().getResource("MenuInGame.fxml"));
 			root.getChildren().add(menuInGame);
+
 			gameController.start();
+			gameController.drawMap(canvasToDrawMap);
 
 			stage.setScene(new Scene(root));
 			stage.show();
@@ -153,7 +161,8 @@ public final class Main extends Application {
 		start((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
 	}
 	public void nextLevel(ActionEvent actionEvent) throws IOException {
-		newGame(actionEvent, listMap[++level]);
+		if (level < listMap.length - 1) newGame(actionEvent, listMap[++level]);
+		else backToMenu(actionEvent);
 	}
 	public void retry(ActionEvent actionEvent) throws IOException {
 		newGame(actionEvent, listMap[level]);
@@ -186,21 +195,55 @@ public final class Main extends Application {
 	 * @param mouseEvent
 	 * @param towerName
 	 */
+	@FXML
+    ImageView normalTower;
+	@FXML
+    ImageView machineGunTower;
+	@FXML
+    ImageView sniperTower;
+	@FXML
+    ImageView superTower;
 	private void buyTower(MouseEvent mouseEvent, String towerName) {
 		System.out.println("Start buying tower");
-		Circle currentTower = (Circle) mouseEvent.getSource();
-		Circle copyTower = new Circle(currentTower.getRadius());
-		copyTower.setFill(currentTower.getFill());
+        ImageView currentTower;
+        switch (towerName) {
+            case "normal tower":
+            {
+                currentTower = normalTower;
+                break;
+            }
+            case "machine gun tower":
+            {
+                currentTower = machineGunTower;
+                break;
+            }
+            case "sniper tower":
+            {
+                currentTower = sniperTower;
+                break;
+            }
+            case "super tower":
+            {
+                currentTower = superTower;
+                break;
+            }
+            default:
+                currentTower = null;
+        }
+
+        assert currentTower != null;
+        ImageView copyTower = new ImageView(currentTower.getImage());
+
 		gameController.getPane().getChildren().add(copyTower);
 
 		currentTower.setOnMouseDragged(mouseEvent1 -> {
 			System.out.println("Choosing location");
-			copyTower.setCenterX(mouseEvent1.getSceneX());
-			copyTower.setCenterY(mouseEvent1.getSceneY());
+			copyTower.setTranslateX(mouseEvent1.getSceneX());
+			copyTower.setTranslateY(mouseEvent1.getSceneY());
 		});
-		currentTower.setOnMouseReleased(mouseevent2 -> {
+		currentTower.setOnMouseReleased(mouseEvent2 -> {
 			gameController.getPane().getChildren().remove(copyTower);
-			gameController.buyTower(mouseevent2, towerName);
+			gameController.buyTower(mouseEvent2, towerName);
 		});
 	}
 	public void buyNormalTower(MouseEvent mouseEvent) {buyTower(mouseEvent, "normal tower");}

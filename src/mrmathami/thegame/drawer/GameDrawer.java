@@ -8,6 +8,7 @@ import mrmathami.thegame.GameField;
 import mrmathami.thegame.entity.GameEntity;
 import mrmathami.thegame.entity.bullet.*;
 import mrmathami.thegame.entity.enemy.*;
+import mrmathami.thegame.entity.tile.AbstractTile;
 import mrmathami.thegame.entity.tile.Mountain;
 import mrmathami.thegame.entity.tile.Road;
 import mrmathami.thegame.entity.tile.Target;
@@ -111,7 +112,7 @@ public final class GameDrawer {
 
 	/**
 	 * @param entity entity
-	 * @return the drawer fot that entity, or null if that entity is not drawable.
+	 * @return the drawer for that entity, or null if that entity is not drawable.
 	 */
 	@Nullable
 	private static EntityDrawer getEntityDrawer(@Nonnull GameEntity entity) {
@@ -150,23 +151,21 @@ public final class GameDrawer {
 	/**
 	 * Do render. Should not touch.
 	 */
-	public final void render() {
+	public final void render(List<GameEntity> entities) {
 		final GameField gameField = this.gameField;
 		final double fieldStartPosX = this.fieldStartPosX;
 		final double fieldStartPosY = this.fieldStartPosY;
 		final double fieldZoom = this.fieldZoom;
 
-		final List<GameEntity> entities = new ArrayList<>(GameEntities.getOverlappedEntities(gameField.getEntities(),
-				fieldStartPosX, fieldStartPosY, Config.SCREEN_WIDTH / fieldZoom, Config.SCREEN_HEIGHT / fieldZoom));
 		entities.sort(GameDrawer::entityDrawingOrderComparator);
 
-		graphicsContext.setFill(Color.CADETBLUE);
-		graphicsContext.fillRect(0.0, 0.0, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
+		graphicsContext.clearRect(0.0, 0.0, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
 
 		GameEntity lastEntity = null;
 		for (final GameEntity entity : entities) {
 			if (lastEntity != null && entityDrawingOrderComparator(entity, lastEntity) == 0) continue;
 			lastEntity = entity;
+
 			final EntityDrawer drawer = getEntityDrawer(entity);
 			if (drawer != null) {
 				drawer.draw(gameField.getTickCount(), graphicsContext, entity,

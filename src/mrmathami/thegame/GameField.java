@@ -62,16 +62,22 @@ public final class GameField {
 	 * @return entities on the field. Read-only list.
 	 */
 	@Nonnull
-	public final Collection<GameEntity> getEntities() {
+	public final Collection<GameEntity> getAllEntities() {
 		return unmodifiableEntities;
 	}
 
 	// Get Target
 	public final Target getTarget(){
-		for (GameEntity gameEntity : entities){
+		for (GameEntity gameEntity : entities) {
 			if (gameEntity instanceof Target) return (Target) gameEntity;
 		}
 		return null;
+	}
+
+	// Get Entities
+	final <E extends GameEntity> List<E> getEntities(Class<E> entityClass) {
+		return new ArrayList<E>(GameEntities.getFilteredOverlappedEntities(getAllEntities(), entityClass,
+				0, 0, getWidth(), getHeight()));
 	}
 
 	/**

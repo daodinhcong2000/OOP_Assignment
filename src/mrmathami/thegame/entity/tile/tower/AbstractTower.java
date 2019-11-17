@@ -38,7 +38,7 @@ public abstract class AbstractTower<E extends AbstractBullet> extends AbstractTi
 			// Remember to set this.tickDown back to this.speed after shooting something.
 			// this.tickDown = speed;
 
-			List<AbstractEnemy> enemyList = (List<AbstractEnemy>) GameEntities.getFilteredOverlappedEntities(field.getEntities(), AbstractEnemy.class, getPosX() - range, getPosY() - range, 2 * range, 2 * range);
+			List<AbstractEnemy> enemyList = (List<AbstractEnemy>) GameEntities.getFilteredOverlappedEntities(field.getAllEntities(), AbstractEnemy.class, getPosX() - range, getPosY() - range, 2 * range, 2 * range);
 			if (enemyList.size() > 0) {
 				AbstractEnemy firstEnemy = enemyList.remove(0);
 				double x = getPosX() + getWidth() / 2;
