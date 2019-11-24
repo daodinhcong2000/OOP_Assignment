@@ -16,4 +16,9 @@ public class TankerSpawner extends AbstractSpawner<TankerEnemy> {
     protected TankerEnemy doSpawn(long createdTick, double posX, double posY) {
         return new TankerEnemy(createdTick, posX, posY);
     }
+
+    @Override
+    public String toString() {
+        return "TankerSpawner";
+    }
 }

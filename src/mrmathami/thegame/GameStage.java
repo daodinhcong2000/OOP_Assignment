@@ -1,6 +1,10 @@
 package mrmathami.thegame;
 
 import mrmathami.thegame.entity.GameEntity;
+import mrmathami.thegame.entity.enemy.BossEnemy;
+import mrmathami.thegame.entity.enemy.NormalEnemy;
+import mrmathami.thegame.entity.enemy.SmallerEnemy;
+import mrmathami.thegame.entity.enemy.TankerEnemy;
 import mrmathami.thegame.entity.tile.Mountain;
 import mrmathami.thegame.entity.tile.Road;
 import mrmathami.thegame.entity.tile.Target;
@@ -72,7 +76,27 @@ public final class GameStage {
 				//for (int i = 0; i < numOfTiles; i++) {
 				while (scanner.hasNext()) {
 					final String value = scanner.next();
-					if ("NormalSpawner".equals(value)) {
+					if ("NormalEnemy".equals(value)) {
+						final int x = scanner.nextInt();
+						final int y = scanner.nextInt();
+						final int health = scanner.nextInt();
+						entities.add(new NormalEnemy(0, x, y, health));
+					} else if ("SmallerEnemy".equals(value)) {
+						final int x = scanner.nextInt();
+						final int y = scanner.nextInt();
+						final int health = scanner.nextInt();
+						entities.add(new SmallerEnemy(0, x, y, health));
+					} else if ("TankerEnemy".equals(value)) {
+						final int x = scanner.nextInt();
+						final int y = scanner.nextInt();
+						final int health = scanner.nextInt();
+						entities.add(new TankerEnemy(0, x, y, health));
+					} else if ("BossEnemy".equals(value)) {
+						final int x = scanner.nextInt();
+						final int y = scanner.nextInt();
+						final int health = scanner.nextInt();
+						entities.add(new BossEnemy(0, x, y, health));
+					} else if ("NormalSpawner".equals(value)) {
 						final int x = scanner.nextInt();
 						final int y = scanner.nextInt();
 						final int w = scanner.nextInt();
@@ -157,9 +181,9 @@ public final class GameStage {
 				throw new IOException("Resource invalid! Resource name: " + name, e);
 			}
 			// width height numOfRemainingTiles
-			// (width*height matrix with 1 for Mountain and 0 for Road)
+			// (width*height matrix with 1 for Mountain, 0 for Road, 2 - Normal tower, 3 - Machine gun tower, 4 - Sniper tower, 5 - Super tower)
 			// <SpawnerName> x y w h spawnInterval initialDelay numOfSpawn
-			// <TowerName> x y
+			//<EnemyName> x y health
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

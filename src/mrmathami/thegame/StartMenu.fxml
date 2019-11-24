@@ -13,17 +13,17 @@
             <Image url="@startmenu.png" />
          </image>
       </ImageView>
-      <Button layoutX="359.0" layoutY="368.0" mnemonicParsing="false" onAction="#loadLevel1" prefHeight="74.0" prefWidth="242.0" text="New game">
+      <Button layoutX="379.0" layoutY="433.0" mnemonicParsing="false" onAction="#loadLevel1" prefHeight="58.0" prefWidth="202.0" text="New game">
          <font>
             <Font name="Cooper Black" size="22.0" />
          </font>
       </Button>
-      <Button layoutX="359.0" layoutY="553.0" mnemonicParsing="false" onAction="#quit" prefHeight="74.0" prefWidth="242.0" text="Quit game">
+      <Button layoutX="379.0" layoutY="567.0" mnemonicParsing="false" onAction="#quit" prefHeight="58.0" prefWidth="202.0" text="Quit game">
          <font>
             <Font name="Cooper Black" size="22.0" />
          </font>
       </Button>
-      <Button layoutX="359.0" layoutY="464.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="74.0" prefWidth="242.0" text="Select level">
+      <Button layoutX="379.0" layoutY="499.0" mnemonicParsing="false" onAction="#selectLevel" prefHeight="58.0" prefWidth="202.0" text="Select level">
          <font>
             <Font name="Cooper Black" size="22.0" />
          </font>
@@ -36,6 +36,11 @@
       <Button layoutX="66.0" layoutY="-17.0" mnemonicParsing="false" onAction="#setSFX" opacity="0.0" prefHeight="66.0" prefWidth="90.0" text="SFX">
          <font>
             <Font name="Cooper Black" size="49.0" />
+         </font>
+      </Button>
+      <Button layoutX="379.0" layoutY="369.0" mnemonicParsing="false" onAction="#loadSavedGame" prefHeight="58.0" prefWidth="202.0" text="Continue">
+         <font>
+            <Font name="Cooper Black" size="22.0" />
          </font>
       </Button>
    </children>

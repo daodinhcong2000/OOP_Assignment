@@ -16,4 +16,9 @@ public class BossSpawner extends AbstractSpawner<BossEnemy> {
     protected BossEnemy doSpawn(long createdTick, double posX, double posY) {
         return new BossEnemy(createdTick, posX, posY);
     }
+
+    @Override
+    public String toString() {
+        return "BossSpawner";
+    }
 }

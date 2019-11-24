@@ -16,4 +16,9 @@ public class SmallerSpawner extends AbstractSpawner<SmallerEnemy> {
     protected SmallerEnemy doSpawn(long createdTick, double posX, double posY) {
         return new SmallerEnemy(createdTick, posX, posY);
     }
+
+    @Override
+    public String toString() {
+        return "SmallerSpawner";
+    }
 }

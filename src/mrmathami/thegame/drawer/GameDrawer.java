@@ -1,14 +1,11 @@
 package mrmathami.thegame.drawer;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import mrmathami.thegame.Config;
-import mrmathami.thegame.GameEntities;
 import mrmathami.thegame.GameField;
 import mrmathami.thegame.entity.GameEntity;
 import mrmathami.thegame.entity.bullet.*;
 import mrmathami.thegame.entity.enemy.*;
-import mrmathami.thegame.entity.tile.AbstractTile;
 import mrmathami.thegame.entity.tile.Mountain;
 import mrmathami.thegame.entity.tile.Road;
 import mrmathami.thegame.entity.tile.Target;
@@ -17,7 +14,6 @@ import mrmathami.thegame.entity.tile.tower.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

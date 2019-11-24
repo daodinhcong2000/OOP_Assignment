@@ -7,7 +7,7 @@ import mrmathami.thegame.entity.GameEntity;
 import javax.annotation.Nonnull;
 
 public final class MachineGunTowerDrawer implements EntityDrawer {
-	private static long i = 1;
+	private static long i = 0;
 	@Override
 	public void draw(long tickCount, @Nonnull GraphicsContext graphicsContext, @Nonnull GameEntity entity, double screenPosX, double screenPosY, double screenWidth, double screenHeight, double zoom) {
 //		graphicsContext.setFill(Color.DARKRED);

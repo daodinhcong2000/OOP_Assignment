@@ -92,7 +92,7 @@
       </ImageView>
       <ImageView fx:id="machineGunTower" fitHeight="49.0" fitWidth="25.0" layoutX="514.0" layoutY="546.0" onMousePressed="#buyMachineGunTower" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="/machineGunTower (3).png" />
+            <Image url="/machineGunTower (4).png" />
          </image>
       </ImageView>
       <ImageView fx:id="sniperTower" fitHeight="49.0" fitWidth="34.0" layoutX="625.0" layoutY="545.0" onMousePressed="#buySniperTower" pickOnBounds="true" preserveRatio="true">

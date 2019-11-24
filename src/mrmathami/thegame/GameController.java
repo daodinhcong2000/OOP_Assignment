@@ -16,14 +16,13 @@ import mrmathami.thegame.entity.bullet.AbstractBullet;
 import mrmathami.thegame.entity.enemy.AbstractEnemy;
 import mrmathami.thegame.entity.tile.Mountain;
 import mrmathami.thegame.entity.tile.Road;
+import mrmathami.thegame.entity.tile.Target;
 import mrmathami.thegame.entity.tile.spawner.AbstractSpawner;
 import mrmathami.thegame.entity.tile.tower.*;
 import mrmathami.utilities.ThreadFactoryBuilder;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.io.*;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -163,7 +162,7 @@ public final class GameController extends AnimationTimer {
 		drawer.render(entities);
 
 		// Fixed MSPT
-		while (System.nanoTime() - startNs <= 70000000);
+		while (System.nanoTime() - startNs <= 50000000);
 
 		// MSPT display. MSPT stand for Milliseconds Per Tick.
 		// It means how many ms your game spend to update and then draw the game once.
@@ -307,5 +306,56 @@ public final class GameController extends AnimationTimer {
 			else System.out.println("Not enough coin to buy " + towerName);
 		}
 		System.out.println(towerName + " purchase failed !!");
+	}
+
+	/**
+	 * Save game to /res/saveGame/saveGame.txt
+	 */
+	static void saveGame(Collection<GameEntity> entities) {
+
+		try {
+			File save = new File("X:/OOP/OOP_Assignment/res/saveGame/saveGame.txt");
+			if (!save.exists()) save.createNewFile();
+			FileWriter fileWriter = new FileWriter(save);
+
+			fileWriter.write("30 17 100\n"); // width height numOfTiles
+
+			int [][] stage = new int[30][17];
+			StringBuilder entitiesInfo = new StringBuilder();
+			for (GameEntity entity : entities) {
+				final int x = (int) entity.getPosX();
+				final int y = (int) entity.getPosY();
+				if (entity instanceof Mountain) {
+					stage[x][y] = 1;
+				} else if (entity instanceof Road) {
+					stage[x][y] = 0;
+				} else if (entity instanceof NormalTower) {
+					stage[x][y] = 2;
+				} else if (entity instanceof MachineGunTower) {
+					stage[x][y] = 3;
+				} else if (entity instanceof SniperTower) {
+					stage[x][y] = 4;
+				} else if (entity instanceof SuperTower) {
+					stage[x][y] = 5;
+				} else if (entity instanceof AbstractEnemy) {
+					entitiesInfo.append(entity.toString()).append(" ").append(x).append(" ").append(y).append(" ").append(((AbstractEnemy) entity).getHealth()).append("\n");
+				} else if (entity instanceof AbstractSpawner) {
+					entitiesInfo.append(entity.toString()).append(" ").append(x).append(" ").append(y).append(" ").append((int) entity.getWidth()).append(" ").append((int) entity.getHeight()).append(" ").append(((AbstractSpawner) entity).getSpawnInterval()).append(" ").append(((AbstractSpawner) entity).getTickDown()).append(" ").append(((AbstractSpawner) entity).getNumOfSpawn()).append("\n");
+				} else if (entity instanceof Target) {
+					entitiesInfo.append("Target ").append(x).append(" ").append(y).append(" ").append((int) entity.getWidth()).append(" ").append((int) entity.getHeight()).append(" ").append(((Target) entity).getHealth()).append("\n");
+				}
+			}
+
+			for (int y = 0; y < 17; y++) {
+				for (int x = 0; x < 29; x++) {
+					fileWriter.write(stage[x][y] + " ");
+				}
+				fileWriter.write(stage[29][y] + "\n");
+			}
+			fileWriter.write(String.valueOf(entitiesInfo));
+			fileWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

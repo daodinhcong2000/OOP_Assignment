@@ -83,9 +83,12 @@ public final class Main extends Application {
 	}
 
 	/**
-	 * Display game stage with corresponding level
+	 * Display game stage with corresponding level or load saved game
 	 * @param actionEvent
 	 */
+	public void loadSavedGame(ActionEvent actionEvent) {
+		newGame(actionEvent, "/saveGame/saveGame.txt");
+	}
 	public void loadLevel1(ActionEvent actionEvent) {
 		level = 0;
 		newGame(actionEvent, listMap[0]);
@@ -235,8 +238,8 @@ public final class Main extends Application {
 
 		currentTower.setOnMouseDragged(mouseEvent1 -> {
 			System.out.println("Choosing location");
-			copyTower.setTranslateX(mouseEvent1.getSceneX());
-			copyTower.setTranslateY(mouseEvent1.getSceneY());
+			copyTower.setTranslateX(mouseEvent1.getSceneX() - 12);
+			copyTower.setTranslateY(mouseEvent1.getSceneY() - 46);
 		});
 		currentTower.setOnMouseReleased(mouseEvent2 -> {
 			gameController.getPane().getChildren().remove(copyTower);

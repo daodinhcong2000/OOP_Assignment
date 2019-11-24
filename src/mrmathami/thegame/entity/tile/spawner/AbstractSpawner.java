@@ -25,6 +25,18 @@ public abstract class AbstractSpawner<E extends AbstractEnemy> extends AbstractT
 		this.numOfSpawn = numOfSpawn;
 	}
 
+	public long getSpawnInterval() {
+		return spawnInterval;
+	}
+
+	public long getTickDown() {
+		return tickDown;
+	}
+
+	public long getNumOfSpawn() {
+		return numOfSpawn;
+	}
+
 	public boolean canSpawn() {
 		return numOfSpawn > 0;
 	}

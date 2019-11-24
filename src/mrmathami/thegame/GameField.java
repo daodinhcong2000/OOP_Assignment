@@ -108,6 +108,7 @@ public final class GameField {
 	 * 2.1. Destroy entities that are marked to be destroyed.
 	 * 2.2. Destroy entities that are outside the field.
 	 * 3. Spawn Entity: Add entities that are marked to be spawned.
+	 * 4. Save game
 	 */
 	final void tick() {
 		this.tickCount += 1;
@@ -151,5 +152,8 @@ public final class GameField {
 			if (entity instanceof SpawnListener) ((SpawnListener) entity).onSpawn(this);
 		}
 		spawnEntities.clear();
+
+		// 4. Auto save game
+		GameController.saveGame(unmodifiableEntities);
 	}
 }
