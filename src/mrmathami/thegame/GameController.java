@@ -312,9 +312,10 @@ public final class GameController extends AnimationTimer {
 	 * Save game to /res/saveGame/saveGame.txt
 	 */
 	static void saveGame(Collection<GameEntity> entities) {
-
 		try {
-			File save = new File("X:/OOP/OOP_Assignment/res/saveGame/saveGame.txt");
+			File save = new File("");
+			String path = save.getAbsolutePath() + "\\res\\saveGame\\saveGame.txt";
+			save =  new File(path);
 			if (!save.exists()) save.createNewFile();
 			FileWriter fileWriter = new FileWriter(save);
 
