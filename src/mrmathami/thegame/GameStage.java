@@ -1,6 +1,10 @@
 package mrmathami.thegame;
 
 import mrmathami.thegame.entity.GameEntity;
+import mrmathami.thegame.entity.bullet.MachineGunBullet;
+import mrmathami.thegame.entity.bullet.NormalBullet;
+import mrmathami.thegame.entity.bullet.SniperBullet;
+import mrmathami.thegame.entity.bullet.SuperBullet;
 import mrmathami.thegame.entity.enemy.BossEnemy;
 import mrmathami.thegame.entity.enemy.NormalEnemy;
 import mrmathami.thegame.entity.enemy.SmallerEnemy;
@@ -76,7 +80,31 @@ public final class GameStage {
 				//for (int i = 0; i < numOfTiles; i++) {
 				while (scanner.hasNext()) {
 					final String value = scanner.next();
-					if ("NormalEnemy".equals(value)) {
+					if ("NormalBullet".equals(value)) {
+						final int x = scanner.nextInt();
+						final int y = scanner.nextInt();
+						final double deltaX = Double.parseDouble(scanner.next());
+						final double deltaY = Double.parseDouble(scanner.next());
+						entities.add(new NormalBullet(0, x, y, deltaX, deltaY));
+					} else if ("MachineGunBullet".equals(value)) {
+						final int x = scanner.nextInt();
+						final int y = scanner.nextInt();
+						final double deltaX = Double.parseDouble(scanner.next());
+						final double deltaY = Double.parseDouble(scanner.next());
+						entities.add(new MachineGunBullet(0, x, y, deltaX, deltaY));
+					} else if ("SniperBullet".equals(value)) {
+						final int x = scanner.nextInt();
+						final int y = scanner.nextInt();
+						final double deltaX = Double.parseDouble(scanner.next());
+						final double deltaY = Double.parseDouble(scanner.next());
+						entities.add(new SniperBullet(0, x, y, deltaX, deltaY));
+					} else if ("SuperBullet".equals(value)) {
+						final int x = scanner.nextInt();
+						final int y = scanner.nextInt();
+						final double deltaX = Double.parseDouble(scanner.next());
+						final double deltaY = Double.parseDouble(scanner.next());
+						entities.add(new SuperBullet(0, x, y, deltaX, deltaY));
+					} else if ("NormalEnemy".equals(value)) {
 						final int x = scanner.nextInt();
 						final int y = scanner.nextInt();
 						final int health = scanner.nextInt();

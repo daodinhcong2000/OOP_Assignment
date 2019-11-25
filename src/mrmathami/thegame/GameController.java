@@ -344,6 +344,8 @@ public final class GameController extends AnimationTimer {
 					entitiesInfo.append(entity.toString()).append(" ").append(x).append(" ").append(y).append(" ").append((int) entity.getWidth()).append(" ").append((int) entity.getHeight()).append(" ").append(((AbstractSpawner) entity).getSpawnInterval()).append(" ").append(((AbstractSpawner) entity).getTickDown()).append(" ").append(((AbstractSpawner) entity).getNumOfSpawn()).append("\n");
 				} else if (entity instanceof Target) {
 					entitiesInfo.append("Target ").append(x).append(" ").append(y).append(" ").append((int) entity.getWidth()).append(" ").append((int) entity.getHeight()).append(" ").append(((Target) entity).getHealth()).append("\n");
+				} else if (entity instanceof AbstractBullet) {
+					entitiesInfo.append(entity.toString()).append(" ").append(x).append(" ").append(y).append(" ").append(((AbstractBullet) entity).getTargetX()).append(" ").append(((AbstractBullet) entity).getTargetY()).append("\n");
 				}
 			}
 
